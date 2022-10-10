@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: . #THIS FOLDER
+      dockerfile: Dockerfile #DOCKER FILE IN FOLDER
+    ports:
+      - 8000:8000 #local port:docker port
+    volumes:
+      - .:/app #all changes in the local folder should be reflected in the docker /app folder and vice versa
+    depends_on:
+      - db # db container should run before backend container
+  db:
+    image: mysql:5.7.22
+    restart: always # always restart whenever service stops
+    environment:
+      MYSQL_DATABASE: admin
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - .dbdata:/var/lib/mysql
+    ports:
+      - 33066:3306 #
